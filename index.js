@@ -11,7 +11,7 @@ const repo = require('./lib/repo');
 const files = require('./lib/files');
 
 
-//
+
 clear();
 console.log(
    chalk.red(
@@ -43,4 +43,45 @@ const getGithubtoken = async() => {
       token = await github.regenerateNewToken();
       return token;
    }
+   //no access token found, register one now
+   token = await github.registerNewtoken();
+   return token;
 }
+
+const run = async() => {
+   try {
+      //retrieve and set Authentication Token
+      const token = await getGithubtoken();
+      github.githubAuth(token);
+
+      //Create remote repository
+      const url = await repo.createRemoteRepo();
+
+      //Create .gitignore file
+      await repo.createGitignore();
+
+      //Setup local repository and push to remote
+      const done = await repo.setupRepo(url);
+      if (done) {
+         console.log(chalk.green('All done'));
+      }
+
+
+   } catch (err) {
+      if (err) {
+         switch (err.code) {
+            case 401:
+               console.log(chalk.red('Couldn\'t log you in. Please provide correct credentials/token.'));
+               break;
+            case 422:
+               console.log(chalk.red('There already exist a remote repository with the same name'));
+               break;
+            default:
+               console.log(err);
+         }
+      }
+
+   }
+}
+
+run();
