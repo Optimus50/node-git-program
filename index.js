@@ -10,10 +10,12 @@ const github = require('.lib/github');
 const repo = require('./lib/repo');
 const files = require('./lib/files');
 
+
+//
 clear();
 console.log(
-   chalk.yellow(
-      figlet.textSync('Gitnit', { horizontalLayput: 'full' })
+   chalk.red(
+      figlet.textSync('Binit', { horizontalLayout: 'full' })
    )
 );
 
@@ -33,7 +35,7 @@ const getGithubtoken = async() => {
    await github.setGithubCredentials();
 
    //Check if access token for ginit was registered
-   const accessToken = await github.hasAccedssToken();
+   const accessToken = await github.hasAccessToken();
    if (accessToken) {
       console.log(chalk.yellow('An existing access token has been found'));
 
