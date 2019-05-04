@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-'use strict';
-
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
 
-const github = require('.lib/github');
+const github = require('./lib/github');
 const repo = require('./lib/repo');
 const files = require('./lib/files');
 
